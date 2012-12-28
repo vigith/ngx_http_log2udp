@@ -44,10 +44,12 @@ BOOTING
 =======
 
 (start the nginx server)
-$ sudo /usr/local/nginx/sbin/nginx
+
+     $ sudo /usr/local/nginx/sbin/nginx
 
 you can now start the udp.pl (a useless script which with STDOUT the udp packet)
-perl /path/path/ngx_http_log2udp/udp.pl
+
+     perl /path/path/ngx_http_log2udp/udp.pl
 
 Later if you wanna change any log2udp setting, edit nginx.conf and do "sudo nginx -s reload".
 
@@ -59,6 +61,7 @@ My dev env was Mac OS X 10.8.2. I was using nginx-1.0.15 for my dev purpose. I a
 was quite minimal using 'curl' and hitting the default / (GET /). 
 
 Author: Vigith Maurice <vigith@sharethis.com> || <v@vigith.com>
+
 License: Same as of Nginx
 
 
