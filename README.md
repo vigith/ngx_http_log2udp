@@ -11,6 +11,10 @@ curl command for generating the above UDP packet was
 
     curl --user 'bar:foo' -e 'vigith:com' http://localhost/
 
+If the UDP server is down, then the recvfrom call will be blocked for the log2udp_timeout period (setsockopt, SO_RCVTIMEO) set 
+in the nginx.conf (it will retry for LOG2UDP_MAX_RETRY which is hard-set to 3). Once the UDP server is back, it will start 
+recieving the events are usual. The retry will also happen even if the send_bytes != received_bytes. 
+
 ngx_http_log2udp, wont alter the current access.log file, so you probably won't face any issue in adopting 
 this. This code hooks in at NGX_HTTP_LOG_PHASE, so even if this module craps out, only the UDP part of logging
 will be affected and the request should be processed fine (if you see otherwise, it is a P1-S1 bug to me :-). 
