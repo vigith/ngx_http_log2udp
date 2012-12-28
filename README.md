@@ -3,6 +3,14 @@ ngx_http_log2udp
 
 Send out a custom access log copy to UDP for further processing.
 
+The UDP packet will have each element '^A' (0x01) seperated and each key_value '^B' (0x02) seperated, eg 
+
+    remote_user^Bbar^Aremote_addr^B127.0.0.1^Ahttp_referer^Bvigith:com^Abody_bytes_sent^B151^Arequest^BGET / HTTP/1.1^Ahttp_user_agent^Bcurl/7.24.0 (x86_64-apple-darwin12.0) libcurl/7.24.0 OpenSSL/0.9.8r zlib/1.2.5^Astatus^B200^Atime_iso8601^B2012-12-27T16:26:20-08:00
+
+curl command for generating the above UDP packet was
+
+    curl --user 'bar:foo' -e 'vigith:com' http://localhost/
+
 ngx_http_log2udp, wont alter the current access.log file, so you probably won't face any issue in adopting 
 this. This code hooks in at NGX_HTTP_LOG_PHASE, so even if this module craps out, only the UDP part of logging
 will be affected and the request should be processed fine (if you see otherwise, it is a P1-S1 bug to me :-). 
