@@ -3,5 +3,5 @@ http {
      log2udp_server "127.0.0.1";
      log2udp_port 54321;
      log2udp_timeout 10000;	# 10 milliseconds
-     log2udp_debug 2; # 1 stands for debug, 2 stands for verbose
+     log2udp_debug 2; # 1 stands for debug, 2 stands for verbose (as of now 1 == 2)
 }

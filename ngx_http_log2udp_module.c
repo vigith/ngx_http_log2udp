@@ -261,7 +261,10 @@ ngx_http_log2udp_log(ngx_http_request_t *r)
 	}
       } while (retry++ < LOG2UDP_MAX_RETRY && _r != _s);
 	
-      ngx_log_error(NGX_LOG_ERR, r->connection->log, 0, "--- Log2udp# %s", log2udp->buf);	
+
+      /* write to error.log, in debug mode */
+      if (log2udp->debug)
+	ngx_log_error(NGX_LOG_ERR, r->connection->log, 0, "--- Log2udp# %s", log2udp->buf);
     }
 
     /* lets clean it up again */
