@@ -10,7 +10,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-#define MAX_LOG2UDP_BUF 4096
+#define LOG2UDP_MAX_BUF 4096
 #define LOG2UDP_MAX_RETRY 3
 
 /* mq structure for location conf */
@@ -22,7 +22,7 @@ typedef struct {
   ngx_uint_t debug;		/* debug value for this module */
   int socketfd;			/* Socket FD */
   struct sockaddr_in servaddr;	/* server addr */
-  u_char buf[MAX_LOG2UDP_BUF];	/* one time allocation for logline */
+  u_char buf[LOG2UDP_MAX_BUF];	/* one time allocation for logline */
   ngx_conf_t *_cf;
 } ngx_http_log2udp_loc_conf_t;
 
@@ -129,7 +129,6 @@ ngx_module_t  ngx_http_log2udp_module = {
 /* create the location conf */
 static void *
 ngx_http_log2udp_create_loc_conf(ngx_conf_t *cf) {
-  printf("create conf\n");
   ngx_http_log2udp_loc_conf_t  *conf;
 
   /* nginx worries about free'ing */
@@ -152,7 +151,6 @@ ngx_http_log2udp_create_loc_conf(ngx_conf_t *cf) {
 /* merge location conf with server conf */
 static char *
 ngx_http_log2udp_merge_loc_conf(ngx_conf_t *cf, void *parent, void *child) {
-    printf("merge conf\n");
     ngx_http_log2udp_loc_conf_t *prev = parent;
     ngx_http_log2udp_loc_conf_t *conf = child;
     ngx_int_t i;
@@ -305,8 +303,8 @@ _join (u_char *s1, const u_char *s2, u_char c, ngx_http_request_t *r) {
   }
 
   /* buffer overflow */
-  if (ngx_strlen(s1) + ngx_strlen(s2) >= MAX_LOG2UDP_BUF) {
-    ngx_log_error(NGX_LOG_ERR, r->connection->log, 0, "MAX_LOG2UDP_BUF [%d bytes] overflowed! when combining (%s) and (%s)", MAX_LOG2UDP_BUF, s1, s2);
+  if (ngx_strlen(s1) + ngx_strlen(s2) >= LOG2UDP_MAX_BUF) {
+    ngx_log_error(NGX_LOG_ERR, r->connection->log, 0, "LOG2UDP_MAX_BUF [%d bytes] overflowed! when combining (%s) and (%s)", LOG2UDP_MAX_BUF, s1, s2);
     return;			/* lets not combine this */
   }
 
